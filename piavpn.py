@@ -51,7 +51,6 @@ def main():
 
   print('login ...')
   token = get_token(config)
-  #token = 'some dummy token blah'
   print('login token: %s' % token)
 
   token_expire = date_now_plus(hours=24)
@@ -168,7 +167,7 @@ def get_server_region(config):
   print('Using server: ' + repr(server))
   return (server, region)
 
-# send API Call via HTTPS GET request, parse JSON response
+# send API call via HTTPS GET request, parse JSON response
 def call_api(server, port, path, **kwargs):
   # needed to force hostname + IP
   # compare: curl --connect-to server_cn::server_ip:
