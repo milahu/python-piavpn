@@ -249,8 +249,10 @@ Endpoint = {res.server_ip}:{res.server_port}
 
   # test IP and country
   actual_ip = test_public_ip(res.server_ip)
-  if region:
-    test_country(config, actual_ip, region)
+
+  # TODO set config.geoipdb from env GEOIPDB
+  #if region:
+  #  test_country(config, actual_ip, region)
 
   print('To disconnect from the VPN, run: wg-quick down pia')
 
