@@ -357,7 +357,15 @@ def async_tcp_ping(host_list, maxlatency, runs=10):
 
 def get_nearest_regions_list(config, full_server_list, print_result):
   debug('find nearest region ... (latency under %dms)' % config.maxlatency)
-  host_list = [r.servers.meta[0].ip for r in full_server_list.regions]
+  # error: AttributeError: 'types.SimpleNamespace' object has no attribute 'meta'
+  #host_list = [r.servers.meta[0].ip for r in full_server_list.regions]
+  host_list = []
+  for r in full_server_list.regions:
+    try:
+      host_list.append(r.servers.meta[0].ip)
+    except AttributeError as e:
+      print("region has no r.servers.meta[0].ip:", e, r)
+      pass
   ping_list = async_tcp_ping(host_list, config.maxlatency, 50)
   # sort and filter
   ping_region_list = zip(ping_list, full_server_list.regions)
