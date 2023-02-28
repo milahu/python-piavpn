@@ -231,7 +231,11 @@ PrivateKey = {private_key}
 [Peer]
 PersistentKeepalive = 25
 PublicKey = {res.server_key}
+
+# TODO why?
+# required for wg-quick, but breaks with wg-netns
 AllowedIPs = 0.0.0.0/0
+
 Endpoint = {res.server_ip}:{res.server_port}
 """
 
