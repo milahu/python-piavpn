@@ -278,6 +278,8 @@ gettoken_url = 'https://privateinternetaccess.com/gtoken/generateToken'
 full_server_list_url = 'https://serverlist.piaservers.net/vpninfo/servers/v4'
 rpc_cert_file = 'ca.rsa.4096.crt'
 
+import shlex
+
 # this is a mess .... but it works :P
 def exec(cmd, **kwargs):
   check = False
@@ -290,13 +292,14 @@ def exec(cmd, **kwargs):
     cmd,
     **kwargs
   )
-  if check and res.exitcode != 0:
+  print("exec:", shlex.join(cmd))
+  if check and res.returncode != 0:
     # correctly interleaving stdout+stderr is crazy complicated ..
     # easier: set capture_output=False
     if kwargs['capture_output']:
       print(res.stdout.decode('utf8'))
       print(res.stderr.decode('utf8'))
-    raise Exception('exitcode ' + res.exitcode)
+    raise Exception(f'returncode {res.returncode}')
   if kwargs['capture_output']:
     return res.stdout.decode('utf8').strip()
 
