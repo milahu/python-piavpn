@@ -415,6 +415,8 @@ def get_server_type(config):
 def show_regions(config):
   print('Getting region list, sorted by latency ...')
   full_server_list = get_full_server_list(config)
+  if config.yellow_regions:
+    full_server_list.regions = list(filter(lambda r: (r.id in green_regions or r.id in yellow_regions), full_server_list.regions))
   ping_region_list = get_nearest_regions_list(config, full_server_list, False)
   #server_type = get_server_type(config)
   longest_region_id = max(len(pr[1].id) for pr in ping_region_list)
@@ -644,6 +646,8 @@ config_schema = {
     #'country': {'type': 'string', 'iscountry': True, 'default': ''},
   }},
   'region': {'type': 'string', 'default': '', 'isregion': True},
+  'green_regions': {'type': 'boolean', 'default': False},
+  'yellow_regions': {'type': 'boolean', 'default': False},
   'disableipv6': {'type': 'boolean', 'default': True},
   'tokenfile': {'type': 'string', 'default': '/opt/piavpn-manual/token'},
   'maxlatency': {'type': 'integer', 'default': 200},
@@ -667,6 +671,8 @@ password: your_password_here
 #setdns: true # Using third party DNS could allow DNS monitoring
 #disableipv6: true # IPv6 connections might compromise security
 #usesudo: true
+#green_regions: True # Show only green regions
+#yellow_regions: True # Show only green and yellow regions 
 #maxlatency: 200 # milliseconds
 #tokenfile: /opt/piavpn-manual/token
 #server: # see `{script_name} --servers`
@@ -696,7 +702,128 @@ valid_regions = {
   'uk_southampton', 'us-newjersey', 'us3', 'us_atlanta', 'us_california',
   'us_chicago', 'us_denver', 'us_florida', 'us_houston', 'us_las_vegas',
   'us_new_york_city', 'us_seattle', 'us_silicon_valley', 'us_south_west',
-  'us_washington_dc', 'venezuela', 'vietnam', 'yerevan', 'za'
+  'us_washington_dc', 'venezuela', 'vietnam', 'yerevan', 'za',
+}
+
+# copyright laws by country
+#
+# green_regions = Downloading allowed (for personal use)
+# yellow_regions = Download Fines (not enforced)
+# red_regions = Download fines (enforced)
+# black_regions = unknown copyright laws
+#
+# https://vpnoverview.com/privacy/downloading/download-fines/
+# https://www.vpnmentor.com/blog/torrents-illegal-update-country/
+# https://vpnpro.com/blog/is-torrenting-illegal/
+
+green_regions = {
+  "poland", # Poland
+  "spain", # Spain, Madrid
+  "es-valencia", # Spain
+  "swiss", # Switzerland
+}
+
+yellow_regions = {
+  "ar", # Argentina
+  "aus", # Australia, Sydney
+  "au_australia-so", # Australia, Streaming Optimized
+  "aus_melbourne", # Australia, Melbourne
+  "aus_perth", # Australia, Perth
+  "br", # Brazil
+  "ca_ontario", # Canada
+  "ca_toronto", # Canada
+  "ca_vancouver", # Canada
+  "china", # China
+  "bogota", # Colombia
+  "czech", # Czech Republic
+  "denmark", # Denmark
+  "denmark_2", # Denmark, Streaming Optimized
+  "egypt", # Egypt
+  "gr", # Greece
+  #"Iran",
+  "israel", # Israel
+  "italy", # Italy, Milano
+  "italy_2", # Italy, Streaming Optimized
+  "lv", # Latvia
+  "mexico", # Mexico
+  "nl_amsterdam", # Netherlands
+  "philippines", # Philippines
+  "pt", # Portugal
+  "ro", # Romania
+  #'rs', # Russia
+  "sg", # Singapore
+  "sk", # Slovakia
+  "slovenia", # Slovenia
+  "za", # South Africa
+  #"Uruguay",
+}
+
+red_regions = {
+  "belgium", # Belgium
+  "fi", # Finland, Helsinki
+  "fi_2", # FI Streaming Optimized
+  "france", # France
+  "de-frankfurt", # Germany
+  "de_berlin", # Germany
+  "in", # India
+  "japan_2", # Japan, Streaming Optimized
+  # Malaysia
+  # New Zealand
+  "ae", # United Arab Emirates
+  "uk", # United Kingdom, London
+  "uk_2", # United Kingdom, Streaming Optimized
+  "uk_manchester", # United Kingdom, Manchester
+  # United States
+  'us-newjersey', 'us3', 'us_atlanta', 'us_california',
+  'us_chicago', 'us_denver', 'us_florida', 'us_houston', 'us_las_vegas',
+  'us_new_york_city', 'us_seattle', 'us_silicon_valley', 'us_south_west',
+  'us_washington_dc',
+}
+
+black_regions = {
+  "panama", # 
+  "venezuela", # 
+  "sofia", # Bulgaria
+  "hungary", # 
+  "kazakhstan", # 
+  "nigeria", # 
+  "al", # Albania
+  "lu", # Luxembourg
+  "montenegro", # 
+  "zagreb", # Croatia
+  "dz", # Algeria
+  "lt", # Lithuania
+  "morocco", # 
+  "qatar", # 
+  "ad", # Andorra
+  "hk", # Hong Kong
+  "mk", # North Macedonia
+  "liechtenstein", # 
+  "taiwan", # 
+  "malta", # 
+  "vietnam", # 
+  "ba", # Bosnia and Herzegovina
+  "srilanka", # Sri Lanka
+  "sanjose", # Costa Rica
+  "mongolia", # 
+  "sweden_2", # SE Streaming Optimized
+  "bahamas", # 
+  "no", # Norway
+  "saudiarabia", # Saudi Arabia
+  "jakarta", # Indonesia
+  "bangladesh", # 
+  "ua", # Ukraine
+  "monaco", # 
+  "yerevan", # Armenia
+  "ireland", # 
+  "cyprus", # 
+  "sweden", # SE Stockholm
+  "ee", # Estonia
+  "greenland", # 
+  "man", # Isle of Man
+  "macau", # Macao
+  "cambodia", # 
+  "rs", # Serbia
 }
 
 valid_protocols = {'wireguard', 'openvpn'}
