@@ -484,8 +484,8 @@ def parse_config(file_path):
   config = validate_config(config)
 
   # more validation
-  if config.server != '' and config.region != '':
-    die('error in config: you cannot set both server and region')
+  if str(config.server) != 'namespace()' and config.region != '':
+    die(f'error in config: you cannot set both server and region. server={repr(config.server)} region={repr(config.region)}')
   if config.protocol == 'wireguard':
     require_command('wg-quick',
       'the program wg-quick is required with protocol: wireguard')
