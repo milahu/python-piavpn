@@ -163,7 +163,7 @@ def start_portforwarding(config, token, server):
 def get_server_region(config):
   server_list = None
   region = None
-  if config.server != dict():
+  if str(config.server) != 'namespace()':
     server_list = namespace_from_object(
       [{ 'ip': config.server.ip, 'cn': config.server.name }])
   else:
