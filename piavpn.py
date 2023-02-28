@@ -459,7 +459,7 @@ def require_root_user():
 
 def parse_args():
   parser = argparse.ArgumentParser(description='Start PIA-VPN client')
-  parser.add_argument('--config', default='/etc/piavpn.yaml',
+  parser.add_argument('--config', '-c', default='/etc/piavpn.yaml',
     help='config file. default: %(default)s')
   parser.add_argument('--regions', action='store_true',
     help='Show all regions, sorted by latency')
