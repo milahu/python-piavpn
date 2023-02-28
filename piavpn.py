@@ -520,7 +520,7 @@ def namespace_from_object(obj):
   return wrap_namespace(obj)
 
 def get_token(config):
-  auth = auth=requests.auth.HTTPBasicAuth(config.username, config.password)
+  auth = requests.auth.HTTPBasicAuth(config.username, config.password)
   res = requests.get(gettoken_url, auth=auth).json()
   if res['status'] != 'OK':
     die('failed to get token: %s' % repr(res))
