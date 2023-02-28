@@ -584,10 +584,12 @@ class ConfigValidator(cerberus.Validator):
       self._error(field, 'Must have format p#######')
   def _validate_isregion(self, isregion, field, value):
     "{'type': 'boolean'}"
-    if isregion and value != '' and not value in valid_regions:
-      self._error(
-        field, 'Must be one of %s' % ', '.join(list(valid_regions))
-      )
+    pass
+    # FIXME use dynamic list of valid regions
+    #if isregion and value != '' and not value in valid_regions:
+    #  self._error(
+    #    field, 'Must be one of %s' % ', '.join(list(valid_regions))
+    #  )
   def _validate_isprotocol(self, isprotocol, field, value):
     "{'type': 'boolean'}"
     if isprotocol and not value in valid_protocols:
