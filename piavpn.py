@@ -266,6 +266,7 @@ def test_country(config, actual_ip, region):
     print(f'error: our public IP is in country {cc} but should be in country {region.country}')
 
 def test_public_ip(expected_ip):
+  # FIXME DNS error
   actual_ip = requests.get('https://api64.ipify.org?format=json').json()['ip']
   if actual_ip == expected_ip:
     print(f'success: now we have the same public IP as our VPN server: {expected_ip}')
