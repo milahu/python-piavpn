@@ -97,11 +97,26 @@ def parse_nanodate(s):
   sample input: 2020-12-31T16:20:00.000000123Z
   --> 123ns will be ignored
   """
+  print(f"parse_nanodate: 1: s = {s}")
+  # ok 2022-10-17T00:51:59.353237574Z
+  # !! 2022-11-25T07:36:48.46057555Z # bad
+  # !! 2023-04-23T03:24:41.6293472Z # bad
+  left, right = s.split("Z")
+  left = left.ljust(29, "0")
+  s = left + right
+  if 'Z' not in s:
+    s += 'Z'
+  print(f"parse_nanodate: 2: s = {s}")
   if s[-1] == 'Z':
     # add explicit UTC timezone, to make strptime happy
     s += '+0000'
-  return datetime.datetime.strptime(
-    s[0:26]+s[29:], '%Y-%m-%dT%H:%M:%S.%fZ%z')
+  # ok 2022-10-17T00:51:59.353237574Z+0000
+  print(f"parse_nanodate: 3: s = {s}")
+  s = s[0:26] + s[29:]
+  print(f"parse_nanodate: 4: s = {s}")
+  return datetime.datetime.strptime(s, '%Y-%m-%dT%H:%M:%S.%fZ%z')
+  # FIXME 2022-10-17T00:46:15.503790+0000 -> parse error
+  # ok    2022-10-17T00:51:59.353237Z+0000
 
 def format_date(d):
   return d.astimezone(tzlocal.get_localzone()).strftime(date_format)
