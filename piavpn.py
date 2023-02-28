@@ -318,7 +318,9 @@ def async_tcp_ping(host_list, maxlatency, runs=10):
     for run_id in range(0, runs):
       time_start = timeit.default_timer()
       try:
-        with async_timeout.timeout(timeout=timeout):
+        # FIXME error=TypeError("timeout() got an unexpected keyword argument 'timeout'")
+        #with async_timeout.timeout(timeout):
+        async with async_timeout.timeout(timeout):
           #print(f'host={host}||port={port}||status=start')
           await asyncio.open_connection(host, port)
       except (asyncio.TimeoutError, OSError) as e:
@@ -334,7 +336,14 @@ def async_tcp_ping(host_list, maxlatency, runs=10):
       res.append(time_cost_milliseconds)
     return min(res) # use best result
   port = 443
+
+  # FIXME DeprecationWarning: There is no current event loop
   loop = asyncio.get_event_loop()
+  #try:
+  #  asyncio.run(main())
+  #except KeyboardInterrupt:
+  #  pass
+
   task_list = [
     loop.create_task(
       worker(host, port, timeout=maxlatency/1000.0, runs=runs)
