@@ -101,11 +101,11 @@ def parse_nanodate(s):
   # ok 2022-10-17T00:51:59.353237574Z
   # !! 2022-11-25T07:36:48.46057555Z # bad
   # !! 2023-04-23T03:24:41.6293472Z # bad
+  if 'Z' not in s:
+    s += 'Z'
   left, right = s.split("Z")
   left = left.ljust(29, "0")
   s = left + right
-  if 'Z' not in s:
-    s += 'Z'
   print(f"parse_nanodate: 2: s = {s}")
   if s[-1] == 'Z':
     # add explicit UTC timezone, to make strptime happy
