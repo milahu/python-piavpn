@@ -216,7 +216,7 @@ def connect_to_wireguard(config, server, token, region):
   #res.server_vip == '12.34.56.78'
   #res.peer_pubkey == 'cACHgasdfuk0asdf/SCasdf8evijasdfasdfTZoasdf='
 
-  print('Disable old Wireguard connection ...')
+  print('Disabling old Wireguard connection ...')
   exec(['wg-quick', 'down', 'pia'], check=False, capture_output=False)
 
   pia_conf_dns = f'DNS = {res.dns_servers[0]}' if config.setdns else ''
