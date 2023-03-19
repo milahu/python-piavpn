@@ -105,7 +105,7 @@ def parse_nanodate(s):
     s += 'Z'
   left, right = s.split("Z")
   left = left.ljust(29, "0")
-  s = left + right
+  s = left + "Z" + right
   print(f"parse_nanodate: 2: s = {s}")
   if s[-1] == 'Z':
     # add explicit UTC timezone, to make strptime happy
